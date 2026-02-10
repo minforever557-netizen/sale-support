@@ -1,1 +1,26 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+ <meta charset="UTF-8">
+ <title>Dashboard</title>
+ <link rel="stylesheet" href="assets/theme.css">
+ <link rel="stylesheet" href="assets/animation.css">
+</head>
+<body>
+
+<div id="app"></div>
+
+<script type="module">
+ import { layout } from "./components/layout.js";
+
+ document.getElementById("app").innerHTML = layout(`
+   <div class="card">
+     <h2>Dashboard</h2>
+     <p>ยินดีต้อนรับเข้าสู่ระบบ Sale Support</p>
+   </div>
+ `);
+</script>
+
+</body>
+</html>
 

@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <link rel="stylesheet" href="./assets/theme.css">
+  <link rel="stylesheet" href="./assets/animation.css">
+</head>
+<body>
+
+<div id="app"></div>
+
+<script type="module">
+ import { layout } from "./components/layout.js";
+ import { registerAuth } from "./services/authService.js";
+ import { saveUser } from "./services/userService.js";
+
+ const content = `
+  <div class="card">
+    <h2>Register User</h2>
+
+    <input id="name" placeholder="ชื่อ - นามสกุล"><br><br>
+    <input id="email" placeholder="Email"><br><br>
+    <input id="password" type="password" placeholder="Password"><br><br>
+
+    <select id="team" onchange="teamChange()">
+      <option value="">-- เลือก Team --</option>
+      <option value="FBB Telesale">FBB Telesale</option>
+      <option value="FBB Direct Sale">FBB Direct Sale</option>
+      <option value="FBB Dealer Sale">FBB Dealer Sale</option>
+    </select><br><br>
+
+    <select id="subTeam" style="display:none"></select><br><br>
+
+    <button class="btn" onclick="register()">Register</button>
+  </div>
+ `;
+
+ document.getElementById("app").innerHTML = layout(content);
+
+ window.teamChange = () => {
+   const team = team.value;
+   subTeam.innerHTML = "";
+
+   if(team === "FBB Telesale"){
+     subTeam.style.display = "none";
+     return;
+   }
+
+   subTeam.style.display = "block";
+   for(let i=1;i<=10;i++){
+     subTeam.innerHTML += `<option>${team} ${i}</option>`;
+   }
+ };
+
+ window.register = async () => {
+   try{
+     const user = await registerAuth(email.value, password.value);
+
+     await saveUser(user.uid,{
+       name: name.value,
+       email: email.value,
+       team: team.value,
+       subTeam: subTeam.value || "-"
+     });
+
+     alert("Register สำเร็จ");
+   }catch(err){
+     alert(err.message);
+   }
+ };
+</script>
+
+</body>
+</html>
 

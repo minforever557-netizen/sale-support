@@ -1,115 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Sale Support</title>
+<meta charset="UTF-8">
+<title>Sale Support System</title>
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Alpine -->
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-  <!-- Heroicons -->
-  <script src="https://unpkg.com/feather-icons"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://unpkg.com/feather-icons"></script>
 
 </head>
 
 <body class="bg-gray-100 font-sans">
 
-<div x-data="{ open: true }" class="flex h-screen overflow-hidden">
+<div x-data="{ open: true }" class="flex h-screen">
 
-  <!-- SIDEBAR -->
-  <div :class="open ? 'w-64' : 'w-20'" 
-       class="bg-gradient-to-b from-green-600 to-green-700 text-white transition-all duration-300 shadow-xl">
+    <!-- SIDEBAR -->
+    <aside :class="open ? 'w-64' : 'w-20'"
+           class="bg-green-800 text-white transition-all duration-300 flex flex-col">
 
-      <!-- Logo -->
-      <div class="flex items-center justify-center h-16 border-b border-green-500">
-          <span x-show="open" class="text-lg font-bold tracking-wide">
-              Sale Support
-          </span>
-          <span x-show="!open" class="text-xl font-bold">
-              SS
-          </span>
-      </div>
+        <!-- Logo -->
+        <div class="h-16 flex items-center justify-center border-b border-green-700">
+            <span x-show="open" class="text-lg font-semibold tracking-wide">
+                SALE SUPPORT
+            </span>
+            <span x-show="!open" class="text-lg font-semibold">
+                SS
+            </span>
+        </div>
 
-      <!-- Menu -->
-      <nav class="mt-6 space-y-2 px-3">
+        <!-- Menu -->
+        <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
 
-          <a href="#"
-             class="flex items-center gap-3 p-3 rounded-lg hover:bg-green-500 transition">
-              <i data-feather="home"></i>
-              <span x-show="open">Dashboard</span>
-          </a>
+            <a href="#"
+               class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-green-700 transition">
+                <i data-feather="home" class="w-4 h-4"></i>
+                <span x-show="open">Dashboard</span>
+            </a>
 
-          <a href="#"
-             class="flex items-center gap-3 p-3 rounded-lg hover:bg-green-500 transition">
-              <i data-feather="file-text"></i>
-              <span x-show="open">Create Ticket</span>
-          </a>
+            <a href="#"
+               class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-green-700 transition">
+                <i data-feather="file-text" class="w-4 h-4"></i>
+                <span x-show="open">Create Ticket</span>
+            </a>
 
-      </nav>
+            <a href="#"
+               class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-green-700 transition">
+                <i data-feather="list" class="w-4 h-4"></i>
+                <span x-show="open">My Ticket</span>
+            </a>
 
-  </div>
+        </nav>
 
-  <!-- CONTENT -->
-  <div class="flex-1 flex flex-col">
+        <!-- Footer -->
+        <div class="p-4 border-t border-green-700 text-xs text-green-200 text-center">
+            Version 1.0
+        </div>
 
-      <!-- NAVBAR -->
-      <div class="bg-white shadow-md h-16 flex items-center justify-between px-6">
+    </aside>
 
-          <button @click="open = !open"
-              class="text-green-600 hover:text-orange-500 transition">
-              <i data-feather="menu"></i>
-          </button>
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 flex flex-col">
 
-          <div class="flex items-center gap-4">
+        <!-- NAVBAR -->
+        <header class="h-16 bg-white border-b flex items-center justify-between px-6">
 
-              <div class="text-gray-700 font-medium">
-                  Welcome, User
-              </div>
+            <button @click="open = !open"
+                    class="text-green-800 hover:text-orange-500 transition">
+                <i data-feather="menu"></i>
+            </button>
 
-              <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg shadow transition">
-                  Logout
-              </button>
+            <div class="flex items-center gap-6">
 
-          </div>
-      </div>
+                <span class="text-gray-700 text-sm">
+                    Welcome, User
+                </span>
 
-      <!-- PAGE CONTENT -->
-      <div class="p-8 overflow-y-auto">
+                <button class="bg-orange-500 hover:bg-orange-600 text-white text-sm px-4 py-2 rounded-md transition">
+                    Logout
+                </button>
 
-          <h1 class="text-3xl font-bold text-green-700 mb-6">
-              Dashboard
-          </h1>
+            </div>
+        </header>
 
-          <div class="grid grid-cols-3 gap-6">
+        <!-- PAGE CONTENT -->
+        <main class="flex-1 p-8 overflow-y-auto">
 
-              <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-                  <h2 class="text-gray-500">Open Tickets</h2>
-                  <p class="text-3xl font-bold text-green-600 mt-2">12</p>
-              </div>
+            <h1 class="text-2xl font-semibold text-gray-800 mb-6">
+                Dashboard
+            </h1>
 
-              <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-                  <h2 class="text-gray-500">Pending</h2>
-                  <p class="text-3xl font-bold text-orange-500 mt-2">5</p>
-              </div>
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-3 gap-6">
 
-              <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-                  <h2 class="text-gray-500">Completed</h2>
-                  <p class="text-3xl font-bold text-green-700 mt-2">30</p>
-              </div>
+                <div class="bg-white border rounded-md p-6">
+                    <p class="text-sm text-gray-500">Open Ticket</p>
+                    <p class="text-3xl font-semibold text-green-700 mt-2">12</p>
+                </div>
 
-          </div>
+                <div class="bg-white border rounded-md p-6">
+                    <p class="text-sm text-gray-500">Pending</p>
+                    <p class="text-3xl font-semibold text-orange-500 mt-2">5</p>
+                </div>
 
-      </div>
+                <div class="bg-white border rounded-md p-6">
+                    <p class="text-sm text-gray-500">Completed</p>
+                    <p class="text-3xl font-semibold text-gray-800 mt-2">30</p>
+                </div>
 
-  </div>
+            </div>
+
+        </main>
+
+    </div>
 
 </div>
 
 <script>
-  feather.replace()
+feather.replace()
 </script>
 
 </body>

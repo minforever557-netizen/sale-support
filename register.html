@@ -1,76 +1,69 @@
 <!DOCTYPE html>
-<html lang="th">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Register</title>
-  <link rel="stylesheet" href="./assets/theme.css">
-  <link rel="stylesheet" href="./assets/animation.css">
+<meta charset="UTF-8">
+<title>Register</title>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
 
-<div id="app"></div>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+<div class="bg-white p-8 rounded shadow w-96">
+
+<h2 class="text-xl font-semibold mb-6 text-green-800">
+Register
+</h2>
+
+<input id="fullname" 
+       type="text" 
+       placeholder="Full Name"
+       class="w-full border p-2 mb-3 rounded">
+
+<input id="email" 
+       type="email" 
+       placeholder="Email"
+       class="w-full border p-2 mb-3 rounded">
+
+<input id="password" 
+       type="password" 
+       placeholder="Password"
+       class="w-full border p-2 mb-4 rounded">
+
+<button id="registerBtn"
+        class="w-full bg-green-800 text-white py-2 rounded hover:bg-green-700 transition">
+Register
+</button>
+
+<p class="text-sm mt-4">
+Already have account? 
+<a href="index.html" class="text-orange-500">Login</a>
+</p>
+
+</div>
 
 <script type="module">
- import { layout } from "./components/layout.js";
- import { registerAuth } from "./services/authService.js";
- import { saveUser } from "./services/userService.js";
 
- const content = `
-  <div class="card">
-    <h2>Register User</h2>
+import { auth } from "./js/firebase-config.js";
+import { createUserWithEmailAndPassword } from 
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    <input id="name" placeholder="ชื่อ - นามสกุล"><br><br>
-    <input id="email" placeholder="Email"><br><br>
-    <input id="password" type="password" placeholder="Password"><br><br>
+document.getElementById("registerBtn")
+.addEventListener("click", async () => {
 
-    <select id="team" onchange="teamChange()">
-      <option value="">-- เลือก Team --</option>
-      <option value="FBB Telesale">FBB Telesale</option>
-      <option value="FBB Direct Sale">FBB Direct Sale</option>
-      <option value="FBB Dealer Sale">FBB Dealer Sale</option>
-    </select><br><br>
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-    <select id="subTeam" style="display:none"></select><br><br>
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    alert("Register Success");
+    window.location.href = "index.html";
+  } catch (error) {
+    alert(error.message);
+  }
 
-    <button class="btn" onclick="register()">Register</button>
-  </div>
- `;
+});
 
- document.getElementById("app").innerHTML = layout(content);
-
- window.teamChange = () => {
-   const team = team.value;
-   subTeam.innerHTML = "";
-
-   if(team === "FBB Telesale"){
-     subTeam.style.display = "none";
-     return;
-   }
-
-   subTeam.style.display = "block";
-   for(let i=1;i<=10;i++){
-     subTeam.innerHTML += `<option>${team} ${i}</option>`;
-   }
- };
-
- window.register = async () => {
-   try{
-     const user = await registerAuth(email.value, password.value);
-
-     await saveUser(user.uid,{
-       name: name.value,
-       email: email.value,
-       team: team.value,
-       subTeam: subTeam.value || "-"
-     });
-
-     alert("Register สำเร็จ");
-   }catch(err){
-     alert(err.message);
-   }
- };
 </script>
 
 </body>
 </html>
-

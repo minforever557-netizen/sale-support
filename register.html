@@ -1,97 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>Register - Sale Support</title>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+<meta charset="UTF-8">
+<title>Register - Sale Support</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      background: #f4f6f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .card {
-      background: white;
-      padding: 30px;
-      width: 350px;
-      border-radius: 10px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-  </style>
-</head>
-<body>
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-<div class="card">
-  <h2>Register</h2>
-
-  <input type="text" id="name" placeholder="Full Name">
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
-
-  <button onclick="register()">Create Account</button>
-
-  <p id="message"></p>
-</div>
-
-<script>
-  // 🔥 ใส่ firebaseConfig ของคุณตรงนี้
   const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_DOMAIN",
     projectId: "YOUR_PROJECT_ID",
   };
 
-  firebase.initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  const auth = firebase.auth();
-  const db = firebase.firestore();
+  window.register = async function() {
 
-  async function register() {
-    const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
+    const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
+    const fullname = document.getElementById("fullname").value;
+    const phone = document.getElementById("phone").value;
+    const mainTeam = document.getElementById("mainTeam").value;
+    const subTeam = document.getElementById("subTeam").value;
 
     try {
-      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      await db.collection("users").doc(user.uid).set({
-        name: name,
-        email: email,
+      await setDoc(doc(db, "users", user.uid), {
+        email,
+        username,
+        fullname,
+        phone,
+        mainTeam,
+        subTeam,
         role: "sales",
         createdAt: new Date()
       });
 
-      document.getElementById("message").innerText = "สมัครสมาชิกสำเร็จ!";
-      window.location.href = "dashboard.html";
+      alert("สมัครสมาชิกสำเร็จ");
+      window.location.href = "login.html";
 
     } catch (error) {
-      document.getElementById("message").innerText = error.message;
+      alert(error.message);
     }
   }
+</script>
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  background: white;
+  width: 400px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2a5298;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #2a5298;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #1e3c72;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Register</h2>
+
+  <input type="text" id="fullname" placeholder="ชื่อ - นามสกุล" required>
+  <input type="email" id="email" placeholder="Email" required>
+  <input type="text" id="username" placeholder="Username สำหรับ Login" required>
+  <input type="password" id="password" placeholder="Password" required>
+  <input type="text" id="phone" placeholder="เบอร์โทรศัพท์" required>
+
+  <select id="mainTeam" onchange="updateSubTeam()" required>
+    <option value="">เลือกทีมหลัก</option>
+    <option value="FBB Direct Sale">FBB Direct Sale</option>
+    <option value="FBB Dealer Sale">FBB Dealer Sale</option>
+    <option value="FBB Telesale">FBB Telesale</option>
+  </select>
+
+  <select id="subTeam" required>
+    <option value="">เลือกทีมย่อย</option>
+  </select>
+
+  <button onclick="register()">Create Account</button>
+</div>
+
+<script>
+function updateSubTeam() {
+  const mainTeam = document.getElementById("mainTeam").value;
+  const subTeam = document.getElementById("subTeam");
+  subTeam.innerHTML = '<option value="">เลือกทีมย่อย</option>';
+
+  if (mainTeam === "FBB Direct Sale") {
+    for (let i = 1; i <= 10; i++) {
+      subTeam.innerHTML += `<option>FBB Direct Sale ${i}</option>`;
+    }
+  }
+
+  if (mainTeam === "FBB Dealer Sale") {
+    for (let i = 1; i <= 10; i++) {
+      subTeam.innerHTML += `<option>FBB Dealer Sale ${i}</option>`;
+    }
+  }
+
+  if (mainTeam === "FBB Telesale") {
+    subTeam.innerHTML += `<option>FBB Telesale</option>`;
+  }
+}
 </script>
 
 </body>

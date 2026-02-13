@@ -4,60 +4,113 @@
   <meta charset="UTF-8">
   <title>Sale Support</title>
 
-  <!-- Tailwind CDN -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Alpine -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+  <!-- Heroicons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 font-sans">
 
-<div x-data="{ open: true }" class="flex h-screen">
+<div x-data="{ open: true }" class="flex h-screen overflow-hidden">
 
-  <!-- Sidebar -->
+  <!-- SIDEBAR -->
   <div :class="open ? 'w-64' : 'w-20'" 
-       class="bg-green-600 text-white transition-all duration-300">
+       class="bg-gradient-to-b from-green-600 to-green-700 text-white transition-all duration-300 shadow-xl">
 
-      <div class="p-4 text-xl font-bold">
-          Sale Support
+      <!-- Logo -->
+      <div class="flex items-center justify-center h-16 border-b border-green-500">
+          <span x-show="open" class="text-lg font-bold tracking-wide">
+              Sale Support
+          </span>
+          <span x-show="!open" class="text-xl font-bold">
+              SS
+          </span>
       </div>
 
-      <nav class="mt-6 space-y-2 px-4">
-          <a href="#" class="block p-2 rounded hover:bg-green-500">
-              Dashboard
+      <!-- Menu -->
+      <nav class="mt-6 space-y-2 px-3">
+
+          <a href="#"
+             class="flex items-center gap-3 p-3 rounded-lg hover:bg-green-500 transition">
+              <i data-feather="home"></i>
+              <span x-show="open">Dashboard</span>
           </a>
-          <a href="#" class="block p-2 rounded hover:bg-green-500">
-              Create Ticket
+
+          <a href="#"
+             class="flex items-center gap-3 p-3 rounded-lg hover:bg-green-500 transition">
+              <i data-feather="file-text"></i>
+              <span x-show="open">Create Ticket</span>
           </a>
+
       </nav>
+
   </div>
 
-  <!-- Content -->
+  <!-- CONTENT -->
   <div class="flex-1 flex flex-col">
 
-      <!-- Navbar -->
-      <div class="bg-white shadow p-4 flex justify-between">
+      <!-- NAVBAR -->
+      <div class="bg-white shadow-md h-16 flex items-center justify-between px-6">
+
           <button @click="open = !open"
-              class="text-green-600 font-bold">
-              ☰
+              class="text-green-600 hover:text-orange-500 transition">
+              <i data-feather="menu"></i>
           </button>
 
-          <div>
-              User Name
+          <div class="flex items-center gap-4">
+
+              <div class="text-gray-700 font-medium">
+                  Welcome, User
+              </div>
+
+              <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg shadow transition">
+                  Logout
+              </button>
+
           </div>
       </div>
 
-      <!-- Page Content -->
-      <div class="p-6">
-          <h1 class="text-2xl font-bold text-green-600">
+      <!-- PAGE CONTENT -->
+      <div class="p-8 overflow-y-auto">
+
+          <h1 class="text-3xl font-bold text-green-700 mb-6">
               Dashboard
           </h1>
+
+          <div class="grid grid-cols-3 gap-6">
+
+              <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                  <h2 class="text-gray-500">Open Tickets</h2>
+                  <p class="text-3xl font-bold text-green-600 mt-2">12</p>
+              </div>
+
+              <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                  <h2 class="text-gray-500">Pending</h2>
+                  <p class="text-3xl font-bold text-orange-500 mt-2">5</p>
+              </div>
+
+              <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                  <h2 class="text-gray-500">Completed</h2>
+                  <p class="text-3xl font-bold text-green-700 mt-2">30</p>
+              </div>
+
+          </div>
+
       </div>
 
   </div>
+
 </div>
+
+<script>
+  feather.replace()
+</script>
 
 </body>
 </html>
